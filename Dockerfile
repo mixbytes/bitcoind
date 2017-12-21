@@ -35,7 +35,7 @@ RUN cd /tmp/src/bitcoin-${BITCOIN_VER} \
 && make install
 RUN strip /build/bin/* /build/lib/*.a /build/lib/*.so
 
-#second stage
+
 FROM alpine:latest
 
 ENV RPCUSER=user
