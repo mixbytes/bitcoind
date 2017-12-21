@@ -2,11 +2,8 @@ FROM alpine:latest AS build
 MAINTAINER Mikhail Shubin <mikhail.shubin@gmail.com>
 
 ENV BITCOIN_VER=0.15.1
-ENV RPCUSER=user
-ENV RPCPASS=pass
 
 WORKDIR /build
-
 RUN apk --update upgrade
 RUN apk add --virtual build-dependendencies \
 wget autoconf automake boost-dev build-base chrpath \
@@ -40,23 +37,19 @@ RUN strip /build/bin/* /build/lib/*.a /build/lib/*.so
 
 #second stage
 FROM alpine:latest
-WORKDIR /data
 
+ENV RPCUSER=user
+ENV RPCPASS=pass
+ENV RPCALLOWIP=192.168.0.1/32
+
+WORKDIR /data
 RUN apk --no-cache --update upgrade \
 && apk add boost boost-program_options libevent libressl sudo
-
 COPY --from=build /build /usr/local
-
 VOLUME ["/data"]
-
 EXPOSE 8332 8333
-
 RUN adduser bitcoin -h /data -g 'bitcoin node' -S
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
-
-ENTRYPOINT [ "/usr/local/bin/entrypoint.sh" \
-#"/bin/sh" \
-]
-
+ENTRYPOINT [ "/usr/local/bin/entrypoint.sh" ]
 HEALTHCHECK --interval=2m --timeout=1m \
 CMD bitcoin-cli getinfo || exit 1

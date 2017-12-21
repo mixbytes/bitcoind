@@ -7,6 +7,6 @@ sudo -H -u bitcoin /usr/local/bin/bitcoind \
 -printtoconsole \
 -datadir=/data \
 -server \
--rest
--rpcuser=$RPCUSER \
--rpcpassword=$RPCPASS
+-rpcuser="$RPCUSER" \
+-rpcpassword="$RPCPASS" \
+-rpcallowip="$RPCALLOWIP"
