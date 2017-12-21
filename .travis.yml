@@ -10,7 +10,7 @@ install:
   - sudo apt-get install docker-ce
 
 script:
-  - ./test/tests.sh
+  - bash ./test/tests.sh
 
 notifications:
   email:
