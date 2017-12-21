@@ -1,0 +1,19 @@
+---
+language: bash
+dist: trusty
+sudo: required
+services:
+  - docker
+
+install:
+  - sudo apt-get update
+  - sudo apt-get install docker-ce
+
+script:
+  - ./test/tests.sh
+
+notifications:
+  email:
+    on_success: change
+    on_failure: always
+
