@@ -1,9 +1,9 @@
 FROM alpine:latest AS build
 MAINTAINER Mikhail Shubin <mikhail.shubin@gmail.com>
 
-ENV BERKELEYDB_VER=db-4.8.30.NC
-ENV BERKELEYDB_PREFIX=/opt/${BERKELEYDB_VER}
 ENV BITCOIN_VER=0.15.1
+ENV RPCUSER=user
+ENV RPCPASS=pass
 
 WORKDIR /build
 
@@ -11,52 +11,52 @@ RUN apk --update upgrade
 RUN apk add --virtual build-dependendencies \
 wget autoconf automake boost-dev build-base chrpath \
 file gnupg libevent-dev libressl libressl-dev \ 
-libtool linux-headers protobuf-dev miniupnpc-dev
+libtool linux-headers protobuf-dev
 
-RUN wget https://github.com/bitcoin/bitcoin/archive/v${BITCOIN_VER}.tar.gz -O /tmp/bitcoin.tar.gz
-RUN tar -xf /tmp/bitcoin.tar.gz -C /build
-RUN cd bitcoin-${BITCOIN_VER} \
+RUN mkdir /tmp/src
+RUN wget http://download.oracle.com/berkeley-db/db-4.8.30.NC.tar.gz \
+-O /tmp/berkley-db.tar.gz
+RUN tar -xf /tmp/berkley-db.tar.gz -C /tmp/src
+RUN cd /tmp/src/db-4.8.30.NC/build_unix \
+  && ../dist/configure --enable-cxx --disable-shared --with-pic --prefix=/build \
+  && make install
+
+RUN wget https://github.com/bitcoin/bitcoin/archive/v${BITCOIN_VER}.tar.gz \
+-O /tmp/bitcoin.tar.gz
+RUN tar -xf /tmp/bitcoin.tar.gz -C /tmp/src
+RUN cd /tmp/src/bitcoin-${BITCOIN_VER} \
+&& export BDB_PREFIX=/build \
 && ./autogen.sh \
-&& ./configure LDFLAGS=-L${BERKELEYDB_PREFIX}/lib/ CPPFLAGS=-I${BERKELEYDB_PREFIX}/include/ \
+&& ./configure LDFLAGS=-L/build/lib/ CPPFLAGS=-I/build/include/ \
 --prefix=/build \
---disable-wallet \
-#--enable-upnp-default \ ?
 --disable-tests \
 --disable-bench \
-# ???
-#--disable-ccache \
 --disable-man \
 --disable-zmq \
 --with-gui=no \
---with-miniupnpc \
-&& make \
+--enable-hardening \
 && make install
-
-RUN strip /build/bin/*
-RUN strip /build/lib/*.a
-RUN strip /build/lib/*.so
+RUN strip /build/bin/* /build/lib/*.a /build/lib/*.so
 
 #second stage
 FROM alpine:latest
-WORKDIR /bitcoin
-
-RUN adduser bitcoin -h /bitcoin -g 'bitcoin node' -S
+WORKDIR /data
 
 RUN apk --no-cache --update upgrade \
-&& apk add boost boost-program_options \
-libevent libressl miniupnpc
+&& apk add boost boost-program_options libevent libressl sudo
 
-COPY --from=build /build/bin /usr/local/bin
-COPY --from=build /build/lib /usr/local/lib
+COPY --from=build /build /usr/local
 
-VOLUME ["/bitcoin"]
+VOLUME ["/data"]
 
-#EXPOSE 8332 8333 18332 18333
-EXPOSE 8333
+EXPOSE 8332 8333
 
-ENTRYPOINT ["/usr/local/bin/bitcoind", "-printtoconsole"]
+RUN adduser bitcoin -h /data -g 'bitcoin node' -S
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 
-#ENTRYPOINT ["/bin/sh"]
+ENTRYPOINT [ "/usr/local/bin/entrypoint.sh" \
+#"/bin/sh" \
+]
 
 HEALTHCHECK --interval=2m --timeout=1m \
 CMD bitcoin-cli getinfo || exit 1
