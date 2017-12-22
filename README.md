@@ -4,11 +4,11 @@
 
 ## Docker-compose commands
 
-docker-compose build
+    docker-compose build
 
-docker-compose up
+    docker-compose up
 
-docker-compose down
+    docker-compose down
 
 ## Build time variable
 
@@ -16,7 +16,7 @@ Bitcoind release version
 
     BITCOIN_VER: 0.15.1
 
-## Run time variable
+## Run time variables
 
 To enable JSON-RPC server change to "yes"
 
