@@ -1,7 +1,7 @@
 FROM alpine:latest AS build
 MAINTAINER Mikhail Shubin <mikhail.shubin@gmail.com>
 
-ENV BITCOIN_VER=0.15.1
+ARG BITCOIN_VER=0.15.1
 
 WORKDIR /build
 RUN apk --update upgrade
@@ -41,6 +41,7 @@ FROM alpine:latest
 ENV RPCUSER=user
 ENV RPCPASS=pass
 ENV RPCALLOWIP=192.168.0.1/32
+ENV RPCENABLED=no
 
 WORKDIR /data
 RUN apk --no-cache --update upgrade \
