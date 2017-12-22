@@ -47,7 +47,7 @@ WORKDIR /data
 RUN apk --no-cache --update upgrade \
 && apk add boost boost-program_options libevent libressl sudo
 COPY --from=build /build /usr/local
-VOLUME ["/data"]
+VOLUME [ "/data" ]
 EXPOSE 8332 8333
 RUN adduser bitcoin -h /data -g 'bitcoin node' -S
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh

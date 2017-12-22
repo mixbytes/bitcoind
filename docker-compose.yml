@@ -1,0 +1,19 @@
+version: '2'
+services:
+  bitcoind:
+    restart: always
+    build:
+      context: .
+      args:
+        BITCOIN_VER: "0.15.1"
+    ports:
+      - "8332:8332"                            # rpc server port
+      - "8333:8333"
+    environment:
+      RPCENABLED: "no"                         # change to "yes" to use json-rpc commands
+      RPCUSER: "user"                          # rpc user name
+      RPCPASS: "pass"                          # rpc user password
+      RPCALLOWIP: "192.168.0.1/32"             # ip network allowed to use rpc
+    volumes:
+      - "~/.bitcoin:/data"                     # bitcoin node data directory
+
