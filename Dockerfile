@@ -51,5 +51,5 @@ EXPOSE 8332 8333
 RUN adduser bitcoin -h /data -g 'bitcoin node' -S
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 ENTRYPOINT [ "/usr/local/bin/entrypoint.sh" ]
-HEALTHCHECK --interval=2m --timeout=1m \
-CMD bitcoin-cli -rpcuser=$RPCUSER -rpcpassword=$RPCPASS getinfo || exit 1
+HEALTHCHECK --interval=1m --timeout=30s \
+CMD bitcoin-cli -rpcuser=$RPCUSER -rpcpassword=$RPCPASS getblockchaininfo || exit 1
