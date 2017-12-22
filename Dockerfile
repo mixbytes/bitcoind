@@ -1,7 +1,7 @@
 FROM alpine:latest AS build
 MAINTAINER Mikhail Shubin <mikhail.shubin@gmail.com>
 
-ARG BITCOIN_VER=0.15.1
+ARG BITCOIN_VER="0.15.1"
 
 WORKDIR /build
 RUN apk --update upgrade
