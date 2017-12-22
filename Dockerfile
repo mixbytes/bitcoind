@@ -38,10 +38,9 @@ RUN strip /build/bin/* /build/lib/*.a /build/lib/*.so
 
 FROM alpine:latest
 
-ENV RPCUSER=user
-ENV RPCPASS=pass
-ENV RPCALLOWIP=192.168.0.1/32
-ENV RPCENABLED=no
+ENV RPCUSER="user"
+ENV RPCPASS="pass"
+ENV RPCALLOWIP="127.0.0.1/8"
 
 WORKDIR /data
 RUN apk --no-cache --update upgrade \
@@ -53,4 +52,4 @@ RUN adduser bitcoin -h /data -g 'bitcoin node' -S
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 ENTRYPOINT [ "/usr/local/bin/entrypoint.sh" ]
 HEALTHCHECK --interval=2m --timeout=1m \
-CMD bitcoin-cli getinfo || exit 1
+CMD bitcoin-cli -rpcuser=$RPCUSER -rpcpassword=$RPCPASS getinfo || exit 1

@@ -10,10 +10,9 @@ services:
       - "8332:8332"                            # rpc server port
       - "8333:8333"
     environment:
-      RPCENABLED: "no"                         # change to "yes" to use json-rpc commands
       RPCUSER: "user"                          # rpc user name
       RPCPASS: "pass"                          # rpc user password
-      RPCALLOWIP: "0.0.0.0/0"                  # ip network allowed to use rpc
+      RPCALLOWIP: "127.0.0.1/8"                # ip network allowed to use rpc
     volumes:
       - "~/.bitcoin:/data"                     # bitcoin node data directory
 
