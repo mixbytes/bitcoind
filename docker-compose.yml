@@ -13,7 +13,7 @@ services:
       RPCENABLED: "no"                         # change to "yes" to use json-rpc commands
       RPCUSER: "user"                          # rpc user name
       RPCPASS: "pass"                          # rpc user password
-      RPCALLOWIP: "192.168.0.1/32"             # ip network allowed to use rpc
+      RPCALLOWIP: "0.0.0.0/0"                  # ip network allowed to use rpc
     volumes:
       - "~/.bitcoin:/data"                     # bitcoin node data directory
 
