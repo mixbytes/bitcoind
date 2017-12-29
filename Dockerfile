@@ -1,6 +1,7 @@
 FROM alpine:latest AS build
 MAINTAINER Mikhail Shubin <mikhail.shubin@gmail.com>
 
+# Bitcoin Core version (0.12.1+)
 ARG BITCOIN_VER="0.15.1"
 ENV BDB_MD5="a14a5486d6b4891d2434039a0ed4c5b7  /tmp/berkley-db.tar.gz"
 
