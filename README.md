@@ -29,3 +29,7 @@ Password for JSON-RPC connections
 Allow JSON-RPC connections from specified source. Valid a single IP (e.g. 1.2.3.4), a network/netmask (e.g. 1.2.3.4/255.255.255.0) or a network/CIDR (e.g. 1.2.3.4/24).
 
     RPCALLOWIP: "127.0.0.1/8"
+
+API's offered over the IPC-RPC interface
+
+    RPCAPI: "admin,db,eth,debug,miner,net,shh,txpool,personal,web3"
