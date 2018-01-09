@@ -1,0 +1,12 @@
+port:
+  tcp:8332:
+    listening: true
+    ip:
+    - 0.0.0.0
+  tcp:8333:
+    listening: true
+    ip:
+    - 0.0.0.0
+process:
+  bitcoind:
+    running: true

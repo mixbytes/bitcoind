@@ -45,7 +45,6 @@ RUN strip /build/bin/* /build/lib/*.a /build/lib/*.so
 
 FROM alpine:latest
 
-ENV RPCAPI="admin,db,eth,debug,miner,net,shh,txpool,personal,web3"
 ENV RPCUSER="user"
 ENV RPCPASS="pass"
 ENV RPCALLOWIP="127.0.0.1/8"
