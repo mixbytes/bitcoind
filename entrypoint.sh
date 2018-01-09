@@ -8,7 +8,7 @@ sudo -H -u bitcoin /usr/local/bin/bitcoind \
 	-datadir=/data \
 	-server \
 	-rpc \
-	-rpcapi "$RPCAPI" \
+	-rpcapi="$RPCAPI" \
 	-rpcuser="$RPCUSER" \
 	-rpcpassword="$RPCPASS" \
 	-rpcallowip="$RPCALLOWIP"
