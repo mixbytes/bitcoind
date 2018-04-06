@@ -1,6 +1,4 @@
 FROM alpine:latest AS build
-MAINTAINER Mikhail Shubin <mikhail.shubin@gmail.com>
-
 # Bitcoin Core version (0.12.1+)
 ARG BITCOIN_VER="0.15.1"
 ENV BDB_MD5="a14a5486d6b4891d2434039a0ed4c5b7  /tmp/berkley-db.tar.gz"
@@ -54,9 +52,9 @@ RUN apk --no-cache --update upgrade \
 && apk --no-cache add boost boost-program_options libevent libressl sudo
 COPY --from=build /build /usr/local
 VOLUME [ "/data" ]
-EXPOSE 8332 8333
+EXPOSE 8332 8333 18332 18333
 RUN adduser bitcoin -h /data -g 'bitcoin node' -S
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
-ENTRYPOINT [ "/usr/local/bin/entrypoint.sh" ]
+ENTRYPOINT [ "/bin/sh", "/usr/local/bin/entrypoint.sh" ]
 HEALTHCHECK --interval=1m --timeout=30s \
 CMD bitcoin-cli -rpcuser=$RPCUSER -rpcpassword=$RPCPASS getblockchaininfo || exit 1

@@ -9,10 +9,14 @@ services:
     ports:
       - "8332:8332"                            # rpc server port
       - "8333:8333"
+      - "18332:18332"                          # testnet
+      - "18333:18333"
     environment:
       RPCUSER: "user"                          # rpc user name
       RPCPASS: "pass"                          # rpc user password
       RPCALLOWIP: "127.0.0.1/8"                # ip network allowed to use rpc
+      TESTNET: "yes"
+      IP4ONLY: "yes"
     volumes:
       - "~/.bitcoin:/data"                     # bitcoin node data directory
 
