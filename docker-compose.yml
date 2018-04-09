@@ -15,8 +15,7 @@ services:
       RPCUSER: "user"                          # rpc user name
       RPCPASS: "pass"                          # rpc user password
       RPCALLOWIP: "127.0.0.1/8"                # ip network allowed to use rpc
-      TESTNET: "no"
-      IP4ONLY: "yes"
+    command: -onlynet=ipv4 -testnet
     volumes:
       - "~/.bitcoin:/data"                     # bitcoin node data directory
 

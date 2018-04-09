@@ -30,10 +30,8 @@ Allow JSON-RPC connections from specified source. Valid a single IP (e.g. 1.2.3.
 
     RPCALLOWIP: "127.0.0.1/8"
 
-Start in testnet.
+Bitcoind run-parameters can be added via docker CMD.
 
-    TESTNET: "yes"
-    
-Start without ipv6.
+    docker-compose.yml: command: -onlynet=ipv4 -testnet
 
-    IP4ONLY: "yes"
+    docker run: docker run -it bitcoind_bitcoind -onlynet=ipv4 -testnet
