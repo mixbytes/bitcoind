@@ -5,7 +5,8 @@ services:
     build:
       context: .
       args:
-        BITCOIN_VER: "0.15.1"
+        BITCOIN_VER: "0.16.0"
+    image: "${REGISTRY}/bitcoind:0.16.0"
     ports:
       - "8332:8332"                            # rpc server port
       - "8333:8333"

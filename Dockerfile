@@ -1,6 +1,6 @@
 FROM alpine:latest AS build
 # Bitcoin Core version (0.12.1+)
-ARG BITCOIN_VER="0.15.1"
+
 ENV BDB_MD5="a14a5486d6b4891d2434039a0ed4c5b7  /tmp/berkley-db.tar.gz"
 
 WORKDIR /build
@@ -17,6 +17,8 @@ RUN tar -xf /tmp/berkley-db.tar.gz -C /tmp/src
 RUN cd /tmp/src/db-4.8.30.NC/build_unix \
   && ../dist/configure --enable-cxx --disable-shared --with-pic --prefix=/build \
   && make install
+
+ARG BITCOIN_VER="0.16.0"
 
 RUN wget -O- https://bitcoin.org/laanwj-releases.asc | gpg --import
 RUN wget https://bitcoin.org/bin/bitcoin-core-${BITCOIN_VER}/SHA256SUMS.asc \
@@ -37,7 +39,7 @@ RUN cd /tmp/src/bitcoin-${BITCOIN_VER} \
 --disable-zmq \
 --with-gui=no \
 --enable-hardening \
-&& make install
+&& make -j8 install
 RUN strip /build/bin/* /build/lib/*.a /build/lib/*.so
 
 
@@ -50,7 +52,7 @@ ENV RPCALLOWIP="127.0.0.1/8"
 WORKDIR /data
 RUN apk --no-cache --update upgrade \
 && apk --no-cache add boost boost-program_options libevent libressl sudo
-COPY --from=build /build /usr/local
+COPY --from=build /build /usr/local 
 VOLUME [ "/data" ]
 EXPOSE 8332 8333 18332 18333
 RUN adduser bitcoin -h /data -g 'bitcoin node' -S
