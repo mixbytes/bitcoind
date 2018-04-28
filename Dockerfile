@@ -55,6 +55,7 @@ RUN apk --no-cache --update upgrade \
 COPY --from=build /build /usr/local 
 VOLUME [ "/data" ]
 EXPOSE 8332 8333 18332 18333
-RUN adduser bitcoin -h /data -g 'bitcoin node' -S
+RUN adduser bitcoin -h /data -u 1001 -g 'bitcoin node' -S
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 ENTRYPOINT [ "/bin/sh", "/usr/local/bin/entrypoint.sh" ]
+
